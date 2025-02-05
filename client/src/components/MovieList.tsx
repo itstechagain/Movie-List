@@ -93,6 +93,7 @@ const MovieList: React.FC = () => {
           placeholder="Movie Name"
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
+          className="input-field"
         />
         <input
           type="number"
@@ -101,8 +102,13 @@ const MovieList: React.FC = () => {
           min="1"
           max="10"
           onChange={(e) => setMovieRating(Number(e.target.value))}
+          className="input-field"
         />
-        <button onClick={handleSubmit}>Submit</button>
+        <button onClick={handleSubmit}
+        className="submit-button"
+        >
+          Submit
+        </button>
       </div>
 
       <table>
@@ -138,11 +144,19 @@ const MovieList: React.FC = () => {
                 {editMovieId === movie.id ? (
                   <button onClick={handleSaveEdit}>Save</button>
                 ) : (
-                  <button onClick={() => handleEdit(movie.id, movie.userRating)}>Edit</button>
+                  <button onClick={() => handleEdit(movie.id, movie.userRating)}
+                  className="edit-button"
+                  >
+                    Edit
+                  </button>
                 )}
               </td>
               <td>
-                <button onClick={() => handleDelete(movie.id)}>Delete</button>
+                <button onClick={() => handleDelete(movie.id)}
+                  className="delete-button"
+                  >
+                    Delete
+                  </button>
               </td>
             </tr>
           ))}
