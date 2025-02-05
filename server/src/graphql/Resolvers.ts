@@ -66,6 +66,7 @@ const resolvers = {
       _: unknown,
       { email, password }: { email: string; password: string }
     ) => {
+      
       const user = await User.findOne({ email });
       if (!user) throw new Error('User not found');
 
@@ -86,6 +87,7 @@ const resolvers = {
       { name, userRating }: { name: string; userRating: number },
       context: GraphQLContext
     ) => {
+      try {
       if (!context.user) throw new Error('Not authenticated');
 
       // TMDB API call
@@ -99,14 +101,17 @@ const resolvers = {
         }
       );
 
-      if (!tmdbResponse.data.results.length) throw new Error('Movie not found on TMDB');
+      if (!tmdbResponse.data.results.length || !tmdbResponse.data.results?.length) {
+        throw new Error('Movie not found on TMDB');
+      }
       const tmdbMovie = tmdbResponse.data.results[0];
 
       // Check for existing movie
       const existingMovie = await Movie.findOne({
-        name: tmdbMovie.title,
+        name: { $regex: new RegExp(tmdbMovie.title, 'i') },
         user: context.user.id
       });
+
       if (existingMovie) throw new Error('Movie already in your list');
 
       const movie = new Movie({
@@ -122,7 +127,11 @@ const resolvers = {
       });
 
       return movie;
-    },
+    } catch (error) {
+      console.error('Add Movie Error:', error);
+      throw new Error('Failed to add movie');
+    }
+  },
 
     deleteMovie: async (
       _: unknown,

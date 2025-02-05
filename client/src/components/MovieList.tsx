@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_MOVIES } from '../graphql/Queries.js';
-import { ADD_MOVIE, DELETE_MOVIE, EDIT_MOVIE_RATING } from '../graphql/Mutations.js';
+import { ADD_MOVIE, DELETE_MOVIE, EDIT_MOVIE_RATING } from '../graphql/Constants.js';
+
+interface Movie {
+  id: string;
+  name: string;
+  rating: number;
+  userRating: number;
+}
 
 const MovieList: React.FC = () => {
   const { loading: moviesLoading, error: moviesError, data: moviesData, refetch } = useQuery(GET_MOVIES);
@@ -30,7 +37,7 @@ const MovieList: React.FC = () => {
     }
 
     // Check for duplicate movie names
-    const isDuplicate = moviesData.getMovies.some((movie: any) => movie.name === movieName);
+    const isDuplicate = moviesData.getMovies.some((movie: Movie) => movie.name === movieName);
     if (isDuplicate) {
       alert('A movie with this name already exists.');
       return;
@@ -39,7 +46,6 @@ const MovieList: React.FC = () => {
     addMovie({
       variables: {
         name: movieName,
-        rating: 0, // Assuming the initial rating is 0
         userRating: movieRating,
       },
     });
@@ -103,17 +109,18 @@ const MovieList: React.FC = () => {
         <thead>
           <tr>
             <th>Movie</th>
+            <th>IMDB</th>
             <th>Rating</th>
-            <th>My Rating</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {movies.map((movie: any) => (
+          {movies.map((movie: Movie) => (
             <tr key={movie.id}>
               <td>{movie.name}</td>
               <td>{movie.rating}</td>
+              <td>{movie.userRating}</td>
               <td>
                 {editMovieId === movie.id ? (
                   <input
