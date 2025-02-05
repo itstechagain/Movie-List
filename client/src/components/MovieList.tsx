@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_MOVIES } from '../graphql/Queries';
-import { ADD_MOVIE, DELETE_MOVIE, EDIT_MOVIE_RATING } from '../graphql/Mutations';
+import { GET_MOVIES } from '../graphql/Queries.js';
+import { ADD_MOVIE, DELETE_MOVIE, EDIT_MOVIE_RATING } from '../graphql/Mutations.js';
 
 const MovieList: React.FC = () => {
   const { loading: moviesLoading, error: moviesError, data: moviesData, refetch } = useQuery(GET_MOVIES);

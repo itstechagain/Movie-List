@@ -4,8 +4,8 @@ import { setContext } from "@apollo/client/link/context";
 const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
-      ? "https://MovieList.com/graphql" // RENDER
-      : "http://localhost:3001/graphql", // LOCAL
+      ? "https://MovieList.com/graphql"
+      : "http://localhost:3001/graphql",
   credentials: "include",
 });
 

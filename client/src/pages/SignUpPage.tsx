@@ -1,14 +1,11 @@
-import SignUpUser from '../components/SignUp';
+import SignUpUser from '../components/SignUp.js';
 
 const SignUpPage: React.FC = () => {
   return (
     <div >
       <div >
         <p >
-          Sign Up and Get Started
-        </p>
-        <p >
-          Rate My Flick
+          Sign Up and Get Started 🍿
         </p>
       </div>
       <SignUpUser />

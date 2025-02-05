@@ -1,15 +1,12 @@
-import LoginUser from '../components/LogIn';
+import LoginUser from '../components/LogIn.js';
 
 const LoginPage: React.FC = () => {
   return (
     <div >
       <div >
-        <p >
-          Rate My Flick!
-        </p>
-        <p >
-          What did you watch today?
-        </p>
+        <h2 >
+          What did you watch today? 🍿
+        </h2>
       </div>
       <LoginUser />
     </div>

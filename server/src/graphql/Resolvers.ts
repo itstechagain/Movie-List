@@ -1,10 +1,13 @@
 import bcrypt from 'bcryptjs';
-import { User } from '../models/User';
-import { Movie } from '../models/Movie';
-import { GraphQLContext } from '../types/Types';
+import { User } from '../models/User.js';
+import { Movie } from '../models/Movie.js';
+import { GraphQLContext } from '../types/Types.js';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import axios from 'axios';
-import { generateToken } from '../middleware/Auth';
+import { generateToken } from '../middleware/Auth.js';
+
+dotenv.config();
 
 const resolvers = {
   Query: {
@@ -14,10 +17,15 @@ const resolvers = {
       context: GraphQLContext
     ) => {
       const userId = id || context.user?.id;
-      if (!userId) throw new Error("Not authenticated");
+      if (!userId) throw new Error(" User ID Not Found");
       
-      const user = await User.findById(userId).populate('movies');
-      if (!user) throw new Error('User not found');
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("User ID Not An ObjectID");
+      }
+
+      const user = await User.findById(new mongoose.Types.ObjectId(userId)).populate('movies').lean();
+      
+      if (!user) throw new Error('User Not Found');
       
       return user;
     },
