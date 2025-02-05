@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Auth from '../utils/Auth';
+import Auth from '../utils/Auth.js';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav >
       <div >
         <div >
-          <span>RMF</span>
+          <span>Rate My Flick 🎥</span>
         </div>
 
         <div >
@@ -37,12 +37,12 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <Link
-              to="/login"
-              >
-              Continue
-            </Link>
-          )}
+            <div>
+            <Link to="/login">Log In</Link>
+            <Link to="/signup" style={{ marginLeft: '10px' }}>Sign Up</Link>
+            </div>
+          )
+          }
         </div>
         
       </div>
