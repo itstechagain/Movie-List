@@ -62,36 +62,43 @@ const resolvers = {
             return { user, token };
         },
         addMovie: async (_, { name, userRating }, context) => {
-            if (!context.user)
-                throw new Error('Not authenticated');
-            // TMDB API call
-            const tmdbResponse = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
-                params: {
-                    api_key: process.env.TMDB_API_KEY,
-                    query: name
+            try {
+                if (!context.user)
+                    throw new Error('Not authenticated');
+                // TMDB API call
+                const tmdbResponse = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
+                    params: {
+                        api_key: process.env.TMDB_API_KEY,
+                        query: name
+                    }
+                });
+                if (!tmdbResponse.data.results.length || !tmdbResponse.data.results?.length) {
+                    throw new Error('Movie not found on TMDB');
                 }
-            });
-            if (!tmdbResponse.data.results.length)
-                throw new Error('Movie not found on TMDB');
-            const tmdbMovie = tmdbResponse.data.results[0];
-            // Check for existing movie
-            const existingMovie = await Movie.findOne({
-                name: tmdbMovie.title,
-                user: context.user.id
-            });
-            if (existingMovie)
-                throw new Error('Movie already in your list');
-            const movie = new Movie({
-                name: tmdbMovie.title,
-                rating: tmdbMovie.vote_average,
-                userRating,
-                user: context.user.id
-            });
-            await movie.save();
-            await User.findByIdAndUpdate(context.user.id, {
-                $push: { movies: movie._id }
-            });
-            return movie;
+                const tmdbMovie = tmdbResponse.data.results[0];
+                // Check for existing movie
+                const existingMovie = await Movie.findOne({
+                    name: { $regex: new RegExp(tmdbMovie.title, 'i') },
+                    user: context.user.id
+                });
+                if (existingMovie)
+                    throw new Error('Movie already in your list');
+                const movie = new Movie({
+                    name: tmdbMovie.title,
+                    rating: tmdbMovie.vote_average,
+                    userRating,
+                    user: context.user.id
+                });
+                await movie.save();
+                await User.findByIdAndUpdate(context.user.id, {
+                    $push: { movies: movie._id }
+                });
+                return movie;
+            }
+            catch (error) {
+                console.error('Add Movie Error:', error);
+                throw new Error('Failed to add movie');
+            }
         },
         deleteMovie: async (_, { id }, context) => {
             if (!context.user)

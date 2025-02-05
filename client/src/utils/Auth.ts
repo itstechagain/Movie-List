@@ -40,7 +40,7 @@ class Auth {
   login(idToken: string, navigate: (path: string) => void) {
     localStorage.setItem('id_token', idToken);
     window.dispatchEvent(new Event('authChange'));
-    navigate('/movielist');
+    navigate('/');
   }
 
   logout(navigate: (path: string) => void) {
