@@ -2,7 +2,7 @@ import SignUpUser from '../components/SignUp.js';
 
 const SignUpPage: React.FC = () => {
   return (
-    <div >
+    <div className = "form-container">
       <div >
         <p >
           Sign Up and Get Started 🍿

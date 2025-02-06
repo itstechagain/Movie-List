@@ -117,6 +117,7 @@ const MovieList: React.FC = () => {
             <th>Movie</th>
             <th>IMDB</th>
             <th>Rating</th>
+            <th>□</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>

@@ -21,8 +21,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav >
-      <div >
+    <nav className="navbar">
+      <div className="nav-content">
         <div >
           <span>Rate My Flick 🎥</span>
         </div>
