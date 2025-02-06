@@ -13,7 +13,7 @@ const App: React.FC = () => {
     <div>
       <Router>
         <Nav />
-        <div>
+        <div className ="main-content">
           <Routes>
             <Route path="/" element={<MovieList />} />
             <Route path="/login" element={<LoginPage />} />
